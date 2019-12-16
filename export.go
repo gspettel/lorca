@@ -27,6 +27,19 @@ func PDF(url, script string, width, height int) ([]byte, error) {
 	})
 }
 
+// PDFFull converts a given URL (may be a local file) to a PDF file. Script is
+// evaluated before the page is printed to PDF, you may modify the contents of
+// the page there of wait until the page is fully rendered.
+//for possible arguments, see https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
+func PDFFull(url, script string, h map[string]interface{}) ([]byte, error) {
+	return doHeadless(url, func(c *chrome) ([]byte, error) {
+		if _, err := c.eval(script); err != nil {
+			return nil, err
+		}
+		return c.pdfFull(h)
+	})
+}
+
 // PNG converts a given URL (may be a local file) to a PNG image. Script is
 // evaluated before the "screenshot" is taken, so you can modify the contents
 // of a URL there. Image bounds are provides in pixels. Background is in ARGB
