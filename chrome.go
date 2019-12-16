@@ -452,6 +452,7 @@ func (c *chrome) pdf(width, height int) ([]byte, error) {
 	result, err := c.send("Page.printToPDF", h{
 		"paperWidth":  float32(width) / 96,
 		"paperHeight": float32(height) / 96,
+		"printBackground": true,
 	})
 	if err != nil {
 		return nil, err
