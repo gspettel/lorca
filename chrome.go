@@ -464,6 +464,18 @@ func (c *chrome) pdf(width, height int) ([]byte, error) {
 	return pdf.Data, err
 }
 
+func (c *chrome) pdfFull(h map[string]interface{}) ([]byte, error) {
+	result, err := c.send("Page.printToPDF", h)
+	if err != nil {
+		return nil, err
+	}
+	pdf := struct {
+		Data []byte `json:"data"`
+	}{}
+	err = json.Unmarshal(result, &pdf)
+	return pdf.Data, err
+}
+
 func (c *chrome) png(x, y, width, height int, bg uint32, scale float32) ([]byte, error) {
 	if x == 0 && y == 0 && width == 0 && height == 0 {
 		// By default either use SVG size if it's an SVG, or use A4 page size
