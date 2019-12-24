@@ -59,7 +59,7 @@ func PromptDownload() {
 	text := "No Chrome/Chromium installation was found. Would you like to download and install it now?"
 
 	// Ask user for confirmation
-	if !messageBox(title, text) {
+	if !MessageBox(title, text) {
 		return
 	}
 
