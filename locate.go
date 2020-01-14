@@ -3,6 +3,7 @@ package lorca
 import (
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
 )
@@ -43,6 +44,14 @@ func LocateChrome() string {
 		}
 	}
 
+	//just in case, we can provide our own chromium engine
+    ep, err := os.Executable()
+    if err == nil {
+        custoDir := filepath.Dir(ep)
+        custoDir = custoDir + "/FluxGA/chromium/chrome.exe"
+        paths = append([]string{custoDir}, paths...)
+    }
+	
 	for _, path := range paths {
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			continue
